@@ -703,6 +703,10 @@ export default class Grid {
 											value = cint(value);
 										}
 
+										if(df.fieldtype==="Float") {
+											value = parseFloat(value);
+										}
+
 										d[fieldnames[ci]] = value;
 									});
 								}
