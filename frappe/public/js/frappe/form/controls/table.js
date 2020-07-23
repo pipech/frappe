@@ -80,6 +80,18 @@ frappe.ui.form.ControlTable = frappe.ui.form.Control.extend({
 					row_idx ++;
 					var row_name = cur_row.doc.name;
 					$.each(row, function(ci, value) {
+						// convert value to match fieldtype
+						const df = frappe.meta.get_docfield(cur_doctype, fieldnames[ci]);
+						if (df.fieldtype==='Date' && value) {
+							value = frappe.datetime.user_to_str(value);
+						}
+						if (df.fieldtype==='Int' || df.fieldtype==='Check') {
+							value = cint(value);
+						}
+						if (df.fieldtype==='Float') {
+							value = parseFloat(value);
+						}
+						
 						if (fieldnames[ci]) frappe.model.set_value(cur_doctype, row_name, fieldnames[ci], value);
 					});
 					frappe.show_progress(__('Processing'), i, data.length);
